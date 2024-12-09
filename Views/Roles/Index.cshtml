@@ -1,0 +1,38 @@
+﻿@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "List of Roles";
+    int count = 1;
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <a asp-action="Create" class="btn btn-primary mb-4">Create New</a>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@role.Name</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-Id="@role.Id" class="btn btn-warning">Edit</a>
+                                <a asp-action="Delete" class="btn btn-danger" onclick="confirmDelete(event)" asp-route-Id="@role.Id">Delete</a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

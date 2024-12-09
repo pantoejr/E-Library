@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "List of Books";
+    int count = 1;
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <a asp-action="Create" class="btn btn-primary mb-4">Create</a>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Title</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@book.Title</td>
+                            <td>@book.CoverImage</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-Id="@book.Id" class="btn btn-danger">Edit</a> |
+                                <a asp-action="Details" asp-route-Id="@book.Id" class="btn btn-info">Details</a> |
+                                <a asp-action="Delete" asp-route-Id="@book.Id" class="btn btn-danger" onclick="confirmDelete(event)">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@model Book
+@{
+    ViewData["Title"] = "Edit Book";
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Title">Title</label>
+                        <input asp-for="Title" class="form-control" required />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Description">Description</label>
+                        <input asp-for="Description" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="Category">Category</label>
+                        @Html.DropDownList("CategoryID", (SelectList)ViewBag.CategoryID, "Select Category", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="CoverImage">Cover Image</label>
+                        <input type="file" name="coverImageFile" class="form-control" accept=".jpg,.png,.jpeg" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <label class="form-label" asp-for="FilePath">Book File</label>
+                        <input type="file" name="pdfFile" required class="form-control" accept=".pdf,.docx,.doc" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group mb-3">
+                        <a asp-action="Read" asp-route-Id="@Model.Id" class="btn btn-info w-100 mt-4" target="_blank">View Book</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary">Update</button> |
+                    <a asp-action="Index" class="btn btn-light text-primary">Back To List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

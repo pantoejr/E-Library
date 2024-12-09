@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Book>
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+
+<div class="container mt-4">
+    <h2>Book List</h2>
+
+    <div class="mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by title, description, or category">
+    </div>
+
+  
+    <div id="bookList" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        @foreach (var book in Model)
+        {
+            <div class="col">
+                <div class="card">
+                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(book.CoverImage)" class="card-img-top" alt="@book.Title">
+                    <div class="card-body">
+                        <h5 class="card-title">@book.Title</h5>
+                        <p class="card-text">@book.Description</p>
+                        <a href="@Url.Action("Read", "Books", new { id = book.Id })" class="btn btn-primary" target="_blank">Read</a>
+                        <a href="@Url.Action("Download", "Books", new { id = book.Id })" class="btn btn-success">Download</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                let searchTerm = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("SearchBooks", "Books")', // URL for the search action
+                    type: 'GET',
+                    data: { searchTerm: searchTerm },
+                    success: function (books) {
+                        let cardContent = '';
+
+                        if (books.length > 0) {
+                            books.forEach(function (book) {
+                                let imageUrl = `data:image/jpeg;base64,${book.coverImage}`;
+                                cardContent += `
+                                        <div class="col">
+                                            <div class="card">
+                                                <img src="${imageUrl}" class="card-img-top" alt="${book.title}">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">${book.title}</h5>
+                                                    <p class="card-text">${book.description || ''}</p>
+                                                    <a href="/Books/Read/${book.id}" class="btn btn-primary" target="_blank">Read</a>
+                                                    <a href="/Books/Download/${book.id}" class="btn btn-success">Download</a>
+                                                </div>
+                                            </div>
+                                        </div>`;
+                            });
+                        } else {
+                            cardContent = `
+                                    <div class="col-12 text-center">
+                                        <p>No books found matching your search.</p>
+                                    </div>`;
+                        }
+
+                        $('#bookList').html(cardContent);
+                    },
+                    error: function () {
+                        alert('An error occurred while searching. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+
+}

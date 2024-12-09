@@ -1,0 +1,55 @@
+﻿@model IEnumerable<AppUser>
+@{
+    ViewData["Title"] = "Users";
+    int count = 1;
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <a asp-action="Create" class="btn btn-primary mb-4">Add New</a>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.LastName</td>
+                            <td>@item.Email</td>
+                            <td>
+                                @if (item.IsActive == true)
+                                {
+                                    <span class="btn btn-success text-white">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="btn btn-danger text-white">Not Active</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
+                                <a asp-action="Details" class="btn btn-info" asp-route-Id="@item.Id">Details</a>
+                                <a asp-action="Delete" class="btn btn-danger" asp-route-Id="@item.Id" onclick="confirmDelete(event)">Delete</a>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Group>
+@{
+    ViewData["Title"] = "Groups";
+    int count = 1;
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <a asp-action="Create" class="btn btn-primary mb-4">Create New</a>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <div class="flex space-x-2">
+                                    <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
+                                    <a asp-action="Details" class="btn btn-primary" asp-route-Id="@item.Id">Details</a>
+                                    <a asp-action="Delete" class="btn btn-danger" onclick="confirmDelete(event)" asp-route-Id="@item.Id">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

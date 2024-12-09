@@ -1,0 +1,47 @@
+﻿@model UserViewModel
+@{
+    ViewData["Title"] = "User Details";
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <label class="form-label">First Name</label>
+                <input asp-for="FirstName" readonly class="form-control" />
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Last Name</label>
+                <input asp-for="LastName" readonly class="form-control" />
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Phone Number</label>
+                <input asp-for="PhoneNumber" readonly class="form-control" />
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" readonly class="form-control" />
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="block mb-3">Group</label>
+                @Html.DropDownList("GroupID", (SelectList)ViewBag.GroupID, "Select Group", new { @class = "form-control", @disabled = true })
+            </div>
+            <div class="col-md-6 mb-2">
+                <label class="form-label">Login Hint</label>
+                <input asp-for="LoginHint" readonly class="form-control" />
+            </div>
+            <div class="col-md-6 mb-2">
+                <form asp-action="RefreshRoles" method="post">
+                    <input type="hidden" name="GroupID" value="@Model.GroupID" />
+                    <input type="hidden" name="UserID" value="@Model.UserID" />
+                    <button class="btn btn-primary w-100">Refresh Roles</button>
+                </form>
+            </div>
+            <div class="col-md-6 mb-2">
+                <a asp-action="Index" class="btn btn-light text-primary">Back To List</a>
+            </div>
+        </div>
+    </div>
+</div>

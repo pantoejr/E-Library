@@ -1,0 +1,26 @@
+﻿@model Group
+@{
+    ViewData["Title"] = "Create Group";
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-header">
+
+        <form asp-action="Create" method="post">
+            <div class="form-group mb-4">
+                <label class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="form-group mb-4">
+                <label class="form-label">Description</label>
+                <input asp-for="Description" class="form-control" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Submit</button>
+                <a asp-action="Index" class="btn btn-light text-primary">Back To List</a>
+            </div>
+        </form>
+    </div>
+</div>

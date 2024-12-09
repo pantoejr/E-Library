@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BookAccessLog>
+@{
+    ViewData["Title"] = "Book Access Log";
+    int count = 1;
+}
+<div class="card">
+    <div class="card-header">
+        @ViewData["Title"]
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>No.</td>
+                        <td>Book</td>
+                        <td>User</td>
+                        <td>Accessed On</td>
+                        <td>Action</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.Book.Title</td>
+                            <td>@item.User.FirstName @item.User.LastName</td>
+                            <td>@item.AccessedOn.ToShortDateString()</td>
+                            <td>@item.Action</td>
+                        </tr>
+                        count++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
