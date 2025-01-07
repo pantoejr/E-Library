@@ -50,11 +50,12 @@
                                 </a>
                             </li>
                         }
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">LIBRARY</span>
-                        </li>
+                       
                         @if(User.IsInRole("Manage-Books")){
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">LIBRARY</span>
+                            </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" asp-action="Index" asp-controller="Books" aria-expanded="false">
                                     <span>
@@ -86,35 +87,42 @@
                                 </a>
                             </li>
                         }
-
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                            <span class="hide-menu">SETTINGS</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Groups" asp-action="Index" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-login"></i>
-                                </span>
-                                <span class="hide-menu">Groups</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Roles" asp-action="Index"  aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-user-plus"></i>
-                                </span>
-                                <span class="hide-menu">Roles</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Users" asp-action="Index" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-mood-happy"></i>
-                                </span>
-                                <span class="hide-menu">Users</span>
-                            </a>
-                        </li>
+                        @if(User.IsInRole("Manage-Settings")){
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                                <span class="hide-menu">SETTINGS</span>
+                            </li>
+                            @if(User.IsInRole("Manage-Groups")){
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Groups" asp-action="Index" aria-expanded="false">
+                                        <span>
+                                            <i class="ti ti-login"></i>
+                                        </span>
+                                        <span class="hide-menu">Groups</span>
+                                    </a>
+                                </li>
+                            }
+                            @if(User.IsInRole("Manage-Roles")){
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Roles" asp-action="Index" aria-expanded="false">
+                                        <span>
+                                            <i class="ti ti-user-plus"></i>
+                                        </span>
+                                        <span class="hide-menu">Roles</span>
+                                    </a>
+                                </li>
+                            }
+                            @if(User.IsInRole("Manage-Users")){
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Users" asp-action="Index" aria-expanded="false">
+                                        <span>
+                                            <i class="ti ti-mood-happy"></i>
+                                        </span>
+                                        <span class="hide-menu">Users</span>
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </nav>
             </div>
@@ -162,7 +170,7 @@
                 }
                 @RenderBody()
                 <div class="py-6 px-6 text-center">
-                    <p class="mb-0 fs-4">Design and Developed with ❤ by KasTech Engineering Solutions</p>
+                    <p class="mb-0 fs-4">Design and Developed with ❤ by 2023-24 Information Technology Graduates </p>
                 </div>
             </div>
         </div>
