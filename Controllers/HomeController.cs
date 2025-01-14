@@ -2,6 +2,7 @@ using E_Library.Data;
 using E_Library.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace E_Library.Controllers
@@ -17,15 +18,29 @@ namespace E_Library.Controllers
             _context = context;
         }
 
+        //public async Task<IActionResult> Index()
+        //{
+        //    var book = await _context.BookAccessLogs
+        //        .Include(x => x.Book)
+        //        .Where(log => log.Action == "Download")
+        //        .GroupBy(log => new
+        //        {
+        //            log.BookID,
+        //            log.Book.Title,
+        //        }).OrderByDescending(group => group.Count()).Select(group => new
+        //        {
+        //            BookID = group.Key.BookID,
+        //            BookTitle = group.Key.Title,
+        //            DownloadCount = group.Count()
+        //        }).FirstOrDefaultAsync();
+
+        //    return View();
+        //}
+
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Books()
-        {
             var books = _context.Books.ToList();
-            return View(books);
+            return View("Books", books);
         }
 
         public IActionResult Error(int? code)

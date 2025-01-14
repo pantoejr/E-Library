@@ -6,9 +6,12 @@
 <div class="card">
     <div class="card-header">@ViewData["Title"]</div>
     <div class="card-body">
-        <a asp-action="Create" class="btn btn-primary mb-4">Create</a>
+        @if (User.IsInRole("Add-Category"))
+        {
+            <a asp-action="Create" class="btn btn-primary mb-4">Create</a>
+        }
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered dataTable">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -23,8 +26,12 @@
                             <td>@count</td>
                             <td>@item.Name</td>
                             <td>
-                                <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning">Edit</a>
-                                <a asp-action="Edit" class="btn btn-danger" onclick="confirmDelete(event)">Delete</a>
+                                @if(User.IsInRole("Edit-Category")){
+                                    <a asp-action="Edit" asp-route-Id="@item.Id" class="btn btn-warning">Edit</a>
+                                }
+                                @if(User.IsInRole("Delete-Category")){
+                                    <a asp-action="Edit" class="btn btn-danger" onclick="confirmDelete(event)">Delete</a>
+                                }
                             </td>
                         </tr>
                         count++;

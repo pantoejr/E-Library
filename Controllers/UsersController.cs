@@ -16,15 +16,19 @@ namespace E_Library.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly AppDbContext _context;
-        public UsersController(UserManager<AppUser> userManager, AppDbContext context)
+        private readonly EmailService _emailService;
+        public UsersController(UserManager<AppUser> userManager, AppDbContext context, EmailService emailService)
         {
             _userManager = userManager;
             _context = context;
+            _emailService = emailService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //var users = await _userManager.Users.Where(x=>!x.UserName.Contains("joelpantoejr@gmail.com")).ToListAsync();
+
             var users = await _userManager.Users.ToListAsync();
             return View(users);
         }
@@ -57,7 +61,9 @@ namespace E_Library.Controllers
                 IsActive = true,
             };
             var groupRoles = await _context.GroupRoles.Include(x => x.IdentityRole).Select(x => x.IdentityRole.Name).ToListAsync();
+
             var result = await _userManager.CreateAsync(appUser, model.ConfirmPassword);
+
             if (result.Succeeded)
             {
                 var userGroup = new GroupUser
@@ -68,6 +74,23 @@ namespace E_Library.Controllers
                 await _context.GroupUsers.AddAsync(userGroup);
                 await _userManager.AddToRolesAsync(appUser, groupRoles);
                 await _context.SaveChangesAsync();
+
+                string userName = model.Email;
+                string userEmail = model.Email;
+                string userPassword = model.ConfirmPassword;
+
+                var htmlContent = $@"
+                            <h1>Account Credentials</h1>
+                            <p>Dear {model.FirstName} {model.LastName},</p>
+                            <p>Welcome to our service! Below are your account credentials:</p>
+                            <p><strong>Username:</strong> {model.Email}</p>
+                            <p><strong>Password:</strong> {model.ConfirmPassword}</p>                         <p><strong>E-Library:</strong>https://suclibrary.site</p>
+                            <p>Please keep this information safe and do not share it with anyone.</p>
+                            <p>If you have any questions, kindly contact the Information Technology Department on campus.</p>
+                            <p>Best regards,<br>Smythe University College E-Library</p><br><hr>
+                            <p>&copy; {DateTime.Now.Year} Smythe University College E-Library. All rights reserved.</p>";
+
+                var response = _emailService.SendEmail(model.Email, "Account Credentials", htmlContent);
                 TempData["Message"] = "User created successfully";
                 TempData["Flag"] = "alert-success";
                 return RedirectToAction(nameof(Index));
@@ -174,9 +197,9 @@ namespace E_Library.Controllers
                 TempData["Flag"] = "alert-danger";
                 return RedirectToAction(nameof(Index));
             }
-
-            await _userManager.DeleteAsync(user);
-            TempData["Message"] = "Record deleted successfully";
+            user.IsActive = false;
+            await _userManager.UpdateAsync(user);
+            TempData["Message"] = "Record disabled successfully";
             TempData["Flag"] = "alert-success";
             return RedirectToAction(nameof(Index));
         }

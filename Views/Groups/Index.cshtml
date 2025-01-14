@@ -8,9 +8,12 @@
         @ViewData["Title"]
     </div>
     <div class="card-body">
-        <a asp-action="Create" class="btn btn-primary mb-4">Create New</a>
+        @if (User.IsInRole("Add-Group"))
+        {
+            <a asp-action="Create" class="btn btn-primary mb-4">Create New</a>
+        }
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered dataTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -26,9 +29,16 @@
                             <td>@item.Name</td>
                             <td>
                                 <div class="flex space-x-2">
-                                    <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
-                                    <a asp-action="Details" class="btn btn-primary" asp-route-Id="@item.Id">Details</a>
-                                    <a asp-action="Delete" class="btn btn-danger" onclick="confirmDelete(event)" asp-route-Id="@item.Id">Delete</a>
+                                    @if(User.IsInRole("Edit-Group")){
+                                        <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
+                                    }
+                                    
+                                    @if(User.IsInRole("View-Group")){
+                                        <a asp-action="Details" class="btn btn-primary" asp-route-Id="@item.Id">Details</a>
+                                    }
+                                    @if(User.IsInRole("Delete-Group")){
+                                        <a asp-action="Delete" class="btn btn-danger" onclick="confirmDelete(event)" asp-route-Id="@item.Id">Delete</a>
+                                    }
                                 </div>
                             </td>
                         </tr>

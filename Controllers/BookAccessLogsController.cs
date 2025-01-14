@@ -13,6 +13,8 @@ namespace E_Library.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Manage-Book-Access-Logs")]
         public async Task<IActionResult> Index()
         {
             var bookAccessLogs = await _context.BookAccessLogs

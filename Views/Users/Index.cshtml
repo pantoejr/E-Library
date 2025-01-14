@@ -8,9 +8,12 @@
         @ViewData["Title"]
     </div>
     <div class="card-body">
-        <a asp-action="Create" class="btn btn-primary mb-4">Add New</a>
+        @if (User.IsInRole("Add-User"))
+        {
+            <a asp-action="Create" class="btn btn-primary mb-4">Add New</a>
+        }
         <div class="table-responsive">
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-bordered dataTable">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -40,9 +43,16 @@
                                 }
                             </td>
                             <td>
-                                <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
-                                <a asp-action="Details" class="btn btn-info" asp-route-Id="@item.Id">Details</a>
-                                <a asp-action="Delete" class="btn btn-danger" asp-route-Id="@item.Id" onclick="confirmDelete(event)">Delete</a>
+                                @if(User.IsInRole("Edit-User")){
+                                    <a asp-action="Edit" class="btn btn-warning" asp-route-Id="@item.Id">Edit</a>
+                                }
+                                @if (User.IsInRole("View-User"))
+                                {
+                                    <a asp-action="Details" class="btn btn-info" asp-route-Id="@item.Id">Details</a>
+                                }
+                                @if(User.IsInRole("Delete-User")){
+                                    <a asp-action="Delete" class="btn btn-danger" asp-route-Id="@item.Id" onclick="confirmDelete(event)">Delete</a>
+                                }
                             </td>
                         </tr>
                         count++;

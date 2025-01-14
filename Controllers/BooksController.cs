@@ -1,6 +1,8 @@
 ﻿using E_Library.Data;
+using E_Library.Helpers;
 using E_Library.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +13,15 @@ namespace E_Library.Controllers
     public class BooksController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public BooksController(AppDbContext context)
+        public BooksController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        [Authorize(Roles = "Manage-Books")]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -24,6 +29,7 @@ namespace E_Library.Controllers
             return View(books);
         }
 
+        [Authorize(Roles = "View-Book")]
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
@@ -36,6 +42,7 @@ namespace E_Library.Controllers
             return View(book);
         }
 
+        [Authorize(Roles = "Add-Book")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -148,15 +155,25 @@ namespace E_Library.Controllers
             return _context.Books.Any(e => e.Id == id);
         }
 
-        public IActionResult Read(int Id)
+        public async Task<IActionResult> Read(int Id)
         {
+            var user = await _userManager.GetUserAsync(User);
             var book = _context.Books.Find(Id);
+            //var user = await
             if (book == null || String.IsNullOrEmpty(book.FilePath))
             {
                 return NotFound();
             }
             book.Views++;
-            _context.SaveChanges();
+            var bookAccessLog = new BookAccessLog()
+            {
+                BookID = book.Id,
+                UserID = user.Id,
+                Action = "Read",
+                AccessedOn = DateTime.Now,
+            };
+            await _context.BookAccessLogs.AddAsync(bookAccessLog);
+            await _context.SaveChangesAsync();
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), book.FilePath);
             if (!System.IO.File.Exists(filePath))
             {
@@ -166,8 +183,9 @@ namespace E_Library.Controllers
             return File(fileStream, "application/pdf");
         }
 
-        public IActionResult Download(int id)
+        public async Task<IActionResult> Download(int id)
         {
+            var user = await _userManager.GetUserAsync(User);
             var book = _context.Books.FirstOrDefault(b => b.Id == id);
             if (book == null || string.IsNullOrEmpty(book.FilePath))
             {
@@ -179,6 +197,15 @@ namespace E_Library.Controllers
                 return NotFound();
             }
             var fileName = Path.GetFileName(book.FilePath);
+            var bookAccessLog = new BookAccessLog()
+            {
+                BookID = book.Id,
+                UserID = user.Id,
+                Action = "Download",
+                AccessedOn = DateTime.Now,
+            };
+            await _context.BookAccessLogs.AddAsync(bookAccessLog);
+            await _context.SaveChangesAsync();
             return File(System.IO.File.ReadAllBytes(filePath), "application/pdf", fileName);
         }
 

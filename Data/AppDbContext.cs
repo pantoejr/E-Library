@@ -16,7 +16,7 @@ namespace E_Library.Data
         : base(options)
         {
             _currentUserService = currentUserService;
-            _connectionString = configuration.GetConnectionString("Default");
+            _connectionString = configuration.GetConnectionString("Production");
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -25,7 +25,7 @@
                 <input asp-for="Email" readonly class="form-control" />
             </div>
             <div class="col-md-6 mb-2">
-                <label class="block mb-3">Group</label>
+                <label class="form-label">Group</label>
                 @Html.DropDownList("GroupID", (SelectList)ViewBag.GroupID, "Select Group", new { @class = "form-control", @disabled = true })
             </div>
             <div class="col-md-6 mb-2">

@@ -3,10 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - E_Library</title>
+    <title>@ViewData["Title"] - Electronic Library</title>
     <link rel="stylesheet" href="~/assets/css/styles.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.css" />
     <link rel="icon" type="image/x-icon" href="~/smythelogo.png" />
 </head>
 <body>
@@ -28,21 +30,10 @@
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Home</span>
                         </li>
-                        @if (User.IsInRole("Dashboard"))
+                        @if (User.IsInRole("Library"))
                         {
                             <li class="sidebar-item">
                                 <a class="sidebar-link" asp-action="Index" asp-controller="Home" aria-expanded="false">
-                                    <span>
-                                        <i class="ti ti-layout-dashboard"></i>
-                                    </span>
-                                    <span class="hide-menu">Dashboard</span>
-                                </a>
-                            </li>
-                        }
-                       @if (User.IsInRole("Library"))
-                        {
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-action="Books" asp-controller="Home" aria-expanded="false">
                                     <span>
                                         <i class="ti ti-books"></i>
                                     </span>
@@ -50,8 +41,9 @@
                                 </a>
                             </li>
                         }
-                       
-                        @if(User.IsInRole("Manage-Books")){
+
+                        @if (User.IsInRole("Manage-Books"))
+                        {
                             <li class="nav-small-cap">
                                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span class="hide-menu">LIBRARY</span>
@@ -87,12 +79,14 @@
                                 </a>
                             </li>
                         }
-                        @if(User.IsInRole("Manage-Settings")){
+                        @if (User.IsInRole("Manage-Settings"))
+                        {
                             <li class="nav-small-cap">
                                 <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                                 <span class="hide-menu">SETTINGS</span>
                             </li>
-                            @if(User.IsInRole("Manage-Groups")){
+                            @if (User.IsInRole("Manage-Groups"))
+                            {
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Groups" asp-action="Index" aria-expanded="false">
                                         <span>
@@ -102,7 +96,8 @@
                                     </a>
                                 </li>
                             }
-                            @if(User.IsInRole("Manage-Roles")){
+                            @if (User.IsInRole("Manage-Roles"))
+                            {
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Roles" asp-action="Index" aria-expanded="false">
                                         <span>
@@ -112,7 +107,8 @@
                                     </a>
                                 </li>
                             }
-                            @if(User.IsInRole("Manage-Users")){
+                            @if (User.IsInRole("Manage-Users"))
+                            {
                                 <li class="sidebar-item">
                                     <a class="sidebar-link" asp-controller="Users" asp-action="Index" aria-expanded="false">
                                         <span>
@@ -170,7 +166,7 @@
                 }
                 @RenderBody()
                 <div class="py-6 px-6 text-center">
-                    <p class="mb-0 fs-4">Design and Developed with ❤ by 2023-24 Information Technology Graduates </p>
+                    <p class="mb-0 fs-4">Designed and developed with Ing. Samuel Annan by 2023-2024 BSc Information Technology Graduated Batch</p>
                 </div>
             </div>
         </div>
@@ -183,6 +179,13 @@
             }
             return false;
         }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".dataTable").DataTable({
+
+            });
+        });
     </script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/sidebarmenu.js"></script>
